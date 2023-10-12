@@ -1,0 +1,110 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               String            @id @default(uuid())
+  name             String
+  email            String            @unique
+  password         String
+  role             USER_ROLE         @default(user)
+  contactNo        String?
+  address          String?
+  profileImg       String            @default("")
+  reviewAndRatings ReviewAndRating[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+  Order     Order[]
+
+  @@map("users")
+}
+
+enum USER_ROLE {
+  user
+  admin
+  super_admin
+}
+
+model Category {
+  id       String    @id @default(uuid())
+  title    String
+  services Service[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+
+  @@map("categories")
+}
+
+model Service {
+  id          String @id @default(uuid())
+  title       String
+  image       String
+  description String
+
+  categoryId       String
+  category         Category          @relation(fields: [categoryId], references: [id])
+  reviewAndRatings ReviewAndRating[]
+
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt()
+  orderedServices OrderedService[]
+
+  @@map("services")
+}
+
+model ReviewAndRating {
+  id     String @id @default(uuid())
+  review String
+  rating Int
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  service   Service @relation(fields: [serviceId], references: [id])
+  serviceId String
+
+  @@map("review_ratings")
+}
+
+model Order {
+  id String @id @default(uuid())
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  status ORDER_STATUS @default(pending)
+
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt()
+  orderedServices OrderedService[]
+
+  @@map("orders")
+}
+
+enum ORDER_STATUS {
+  pending
+  confirmed
+  done
+}
+
+model OrderedService {
+  id String @id @default(uuid())
+
+  order   Order  @relation(fields: [orderId], references: [id])
+  orderId String
+
+  service   Service @relation(fields: [serviceId], references: [id])
+  serviceId String
+
+  @@map("ordered_services")
+}

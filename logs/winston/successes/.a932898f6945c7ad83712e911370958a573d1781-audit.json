@@ -1,0 +1,85 @@
+{
+  "keep": {
+    "days": true,
+    "amount": 14
+  },
+  "auditLog": "E:\\courses\\programmingHero\\next-level\\milestone-6\\assingment-08\\logs\\winston\\successes\\.a932898f6945c7ad83712e911370958a573d1781-audit.json",
+  "files": [
+    {
+      "date": 1695822125546,
+      "name": "E:\\courses\\programmingHero\\next-level\\milestone-6\\assingment-08\\logs\\winston\\successes\\phu-2023-27-09-19-success.log",
+      "hash": "e3d0e1a2e6e7a29266c0cee57692107b3c7adea1c4affb8631b0db6b7f63e4c9"
+    },
+    {
+      "date": 1695823384512,
+      "name": "E:\\courses\\programmingHero\\next-level\\milestone-6\\assingment-08\\logs\\winston\\successes\\phu-2023-27-09-20-success.log",
+      "hash": "9b15e253ad3c8215b4aad27eb580c8fd5fc86d9f6092cdd1715aedc364c15658"
+    },
+    {
+      "date": 1695826821092,
+      "name": "E:\\courses\\programmingHero\\next-level\\milestone-6\\assingment-08\\logs\\winston\\successes\\phu-2023-27-09-21-success.log",
+      "hash": "b1d94add9a053e27b4febde295c568dda1a493a5d0b06bd038197799dc737a18"
+    },
+    {
+      "date": 1695834011553,
+      "name": "E:\\courses\\programmingHero\\next-level\\milestone-6\\assingment-08\\logs\\winston\\successes\\phu-2023-27-09-23-success.log",
+      "hash": "c1a5a42b11317c32b2f6f8e5c1b3cddc8faf6796489c6838b12053d4e595f813"
+    },
+    {
+      "date": 1695904825388,
+      "name": "E:\\courses\\programmingHero\\next-level\\milestone-6\\assingment-08\\logs\\winston\\successes\\phu-2023-28-09-18-success.log",
+      "hash": "a2fd1ec12ad7e4c566babc6da83138ffd263947923836d54b97a8d21b0bdc724"
+    },
+    {
+      "date": 1695906047387,
+      "name": "E:\\courses\\programmingHero\\next-level\\milestone-6\\assingment-08\\logs\\winston\\successes\\phu-2023-28-09-19-success.log",
+      "hash": "48e9e721efce6e3487f00fe7734de48088c7ac0a85e797da9dd17dbb27ce9975"
+    },
+    {
+      "date": 1695909842538,
+      "name": "E:\\courses\\programmingHero\\next-level\\milestone-6\\assingment-08\\logs\\winston\\successes\\phu-2023-28-09-20-success.log",
+      "hash": "4d7528dde1c6bb2c21bef40755e82a381603422ef3fac6e7c5e9bb03b27eb043"
+    },
+    {
+      "date": 1695914253203,
+      "name": "E:\\courses\\programmingHero\\next-level\\milestone-6\\assingment-08\\logs\\winston\\successes\\phu-2023-28-09-21-success.log",
+      "hash": "ecf5037b781376dc4c0ab93f91c66bf203e01f46352dfe1a5897062e23442a4c"
+    },
+    {
+      "date": 1695916817303,
+      "name": "E:\\courses\\programmingHero\\next-level\\milestone-6\\assingment-08\\logs\\winston\\successes\\phu-2023-28-09-22-success.log",
+      "hash": "88b3e6a4b4bbf2607d3c44b083fe670021df7ea6e96a2e2366ae17f507128aa2"
+    },
+    {
+      "date": 1695921337923,
+      "name": "E:\\courses\\programmingHero\\next-level\\milestone-6\\assingment-08\\logs\\winston\\successes\\phu-2023-28-09-23-success.log",
+      "hash": "4cf076fea692af3a5b37c22a800a66aa8d233fbe48ba68e32d230a4a98c9ae05"
+    },
+    {
+      "date": 1695962623223,
+      "name": "E:\\courses\\programmingHero\\next-level\\milestone-6\\assingment-08\\logs\\winston\\successes\\phu-2023-29-09-10-success.log",
+      "hash": "f3d68b5e9aeb62d4d2d74acfb00f8613556cfcad611e16f5f7aad079acdd689e"
+    },
+    {
+      "date": 1695964245702,
+      "name": "E:\\courses\\programmingHero\\next-level\\milestone-6\\assingment-08\\logs\\winston\\successes\\phu-2023-29-09-11-success.log",
+      "hash": "46f802b44d4761fba12733e9fa0e25db4b8764383baa4cdf75e85d5b90642af4"
+    },
+    {
+      "date": 1695967207085,
+      "name": "E:\\courses\\programmingHero\\next-level\\milestone-6\\assingment-08\\logs\\winston\\successes\\phu-2023-29-09-12-success.log",
+      "hash": "3b4bac552bee734e30369c1139794b62c564b87a6243188ee2e91fb9645d50d1"
+    },
+    {
+      "date": 1695978049576,
+      "name": "E:\\courses\\programmingHero\\next-level\\milestone-6\\assingment-08\\logs\\winston\\successes\\phu-2023-29-09-15-success.log",
+      "hash": "0dfbd9bdfd71c395ea5b9cf77660499cdfab5d6036c2dfe2a59a2080276ca5f1"
+    },
+    {
+      "date": 1695981862457,
+      "name": "E:\\courses\\programmingHero\\next-level\\milestone-6\\assingment-08\\logs\\winston\\successes\\phu-2023-29-09-16-success.log",
+      "hash": "16dd09666d8eb5fa12b0f1e98de042e46b4869528d4e0e0c963cd1f03128cfaa"
+    }
+  ],
+  "hashType": "sha256"
+}

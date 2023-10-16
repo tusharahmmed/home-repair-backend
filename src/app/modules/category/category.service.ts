@@ -10,7 +10,11 @@ const insertIntoDb = async (payload: Category) => {
 };
 
 const getAllDocument = async () => {
-  const result = await prisma.category.findMany();
+  const result = await prisma.category.findMany({
+    include: {
+      services: true,
+    },
+  });
 
   return result;
 };

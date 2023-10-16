@@ -3,8 +3,8 @@ import { PAGINATION_FIELDS } from '../../../constants/pagination';
 import catchAsync from '../../../shared/catchAsync';
 import pick from '../../../shared/pick';
 import sendResponse from '../../../shared/sendResponse';
-import { BOOK_FILTERS_FIELDS } from './book.constant';
-import { BookService } from './book.service';
+import { BOOK_FILTERS_FIELDS } from './service.constant';
+import { BookService } from './service.service';
 
 const insertIntoDb = catchAsync(async (req, res) => {
   const result = await BookService.insertIntoDb(req.body);
@@ -12,7 +12,7 @@ const insertIntoDb = catchAsync(async (req, res) => {
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
-    message: 'Book created successfully',
+    message: 'Service created successfully',
     data: result,
   });
 });
@@ -27,7 +27,7 @@ const getAllDocument = catchAsync(async (req, res) => {
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
-    message: 'Books fetched successfully',
+    message: 'Service fetched successfully',
     meta: result.meta,
     data: result.data,
   });
@@ -40,7 +40,7 @@ const getDocumentById = catchAsync(async (req, res) => {
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
-    message: 'Book fetched successfully',
+    message: 'Service fetched successfully',
     data: result,
   });
 });
@@ -54,7 +54,7 @@ const getDocumentByCategory = catchAsync(async (req, res) => {
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
-    message: 'Books with associated category data fetched successfully',
+    message: 'data fetched successfully',
     meta: result.meta,
     data: result.data,
   });
@@ -68,7 +68,7 @@ const updateDocumentById = catchAsync(async (req, res) => {
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
-    message: 'Book updated successfully',
+    message: 'Service updated successfully',
     data: result,
   });
 });
@@ -81,7 +81,7 @@ const deleteDocumentById = catchAsync(async (req, res) => {
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
-    message: 'Book is deleted successfully',
+    message: 'Service deleted successfully',
     data: result,
   });
 });

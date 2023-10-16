@@ -6,60 +6,36 @@ import httpStatus from 'http-status';
 import { JwtPayload } from 'jsonwebtoken';
 import ApiError from '../../../errors/ApiError';
 import prisma from '../../../shared/prisma';
-import { IOrderPayload } from './order.interface';
 
-const createOrder = async (payload: IOrderPayload, userId: string) => {
-  const { orderedBooks } = payload;
+const createOrder = async (payload: any, userId: string) => {
+  payload.userId = userId;
 
-  // start tarnsaction
-  const newOrder = await prisma.$transaction(async transactionClient => {
-    // crate order
-    const createdOrder = await transactionClient.order.create({
-      data: { userId },
-    });
+  // create order
 
-    // create orderedBook
-    const createdOrderBook = await transactionClient.orderedBook.createMany({
-      data: orderedBooks.map(item => ({
-        orderId: createdOrder.id,
-        bookId: item.bookId,
-        quantity: item.quantity,
-      })),
-    });
-
-    return createdOrder;
+  const newOrder = await prisma.order.create({
+    data: payload,
   });
 
-  if (newOrder) {
-    const responseData: any = await prisma.order.findUnique({
-      where: {
-        id: newOrder.id,
-      },
-
-      include: {
-        orderedBooks: {
-          select: { bookId: true, quantity: true },
-        },
-      },
-    });
-
-    return responseData;
-  }
-
-  throw new ApiError(httpStatus.BAD_REQUEST, 'unabel to create order');
+  return newOrder;
 };
 
 const getAllOrders = async (user: JwtPayload) => {
   // if user a customer
-  if (user.role === USER_ROLE.customer) {
+  if (user.role === USER_ROLE.user) {
     const result = await prisma.order.findMany({
       where: {
-        userId: user.id,
+        userId: user?.id,
       },
       include: {
-        orderedBooks: {
+        service: {
           include: {
-            book: true,
+            category: true,
+          },
+        },
+        user: {
+          select: {
+            name: true,
+            email: true,
           },
         },
       },
@@ -70,10 +46,19 @@ const getAllOrders = async (user: JwtPayload) => {
 
   // if admin
   const result = await prisma.order.findMany({
+    where: {
+      userId: user?.id,
+    },
     include: {
-      orderedBooks: {
+      service: {
         include: {
-          book: true,
+          category: true,
+        },
+      },
+      user: {
+        select: {
+          name: true,
+          email: true,
         },
       },
     },
@@ -84,16 +69,21 @@ const getAllOrders = async (user: JwtPayload) => {
 
 const getSingleOrder = async (id: string, user: JwtPayload) => {
   // for customers
-  if (user.role === USER_ROLE.customer) {
+  if (user.role === USER_ROLE.user) {
     const result = await prisma.order.findUnique({
       where: {
         id,
       },
       include: {
-        orderedBooks: {
+        service: {
+          include: {
+            category: true,
+          },
+        },
+        user: {
           select: {
-            bookId: true,
-            quantity: true,
+            name: true,
+            email: true,
           },
         },
       },
@@ -114,12 +104,88 @@ const getSingleOrder = async (id: string, user: JwtPayload) => {
       id,
     },
     include: {
-      orderedBooks: {
-        select: {
-          bookId: true,
-          quantity: true,
+      service: {
+        include: {
+          category: true,
         },
       },
+      user: {
+        select: {
+          name: true,
+          email: true,
+          contactNo: true,
+        },
+      },
+    },
+  });
+
+  return result;
+};
+
+const updateOrder = async (id: string, user: JwtPayload, payload: any) => {
+  // for customers
+  if (user.role === USER_ROLE.user) {
+    const orderDetails = await prisma.order.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    // check same customer then update
+    if (orderDetails?.userId === user.id) {
+      const result = await prisma.order.update({
+        where: {
+          id,
+        },
+        data: payload,
+      });
+
+      return result;
+    } else {
+      throw new ApiError(httpStatus.FORBIDDEN, 'Forbidden');
+    }
+  }
+
+  // for admins
+
+  const result = await prisma.order.update({
+    where: {
+      id,
+    },
+    data: payload,
+  });
+
+  return result;
+};
+
+const deleteOrder = async (id: string, user: JwtPayload) => {
+  // for customers
+  if (user.role === USER_ROLE.user) {
+    const orderDetails = await prisma.order.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    // check same customer then update
+    if (orderDetails?.userId === user.id) {
+      const result = await prisma.order.delete({
+        where: {
+          id,
+        },
+      });
+
+      return result;
+    } else {
+      throw new ApiError(httpStatus.FORBIDDEN, 'Forbidden');
+    }
+  }
+
+  // for admins
+
+  const result = await prisma.order.delete({
+    where: {
+      id,
     },
   });
 
@@ -130,4 +196,6 @@ export const OrderService = {
   createOrder,
   getAllOrders,
   getSingleOrder,
+  updateOrder,
+  deleteOrder,
 };

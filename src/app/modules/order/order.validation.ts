@@ -2,15 +2,11 @@ import { z } from 'zod';
 
 const createOrder = z.object({
   body: z.object({
-    orderedBooks: z
-      .array(
-        z.object({
-          bookId: z.string({ required_error: 'bookId is required' }),
-          quantity: z.number({ required_error: 'quantity is required' }).min(1),
-        }),
-        { required_error: 'orderedBooks is required' }
-      )
-      .nonempty({ message: 'cart has no items' }),
+    serviceId: z.string({ required_error: 'Service is is required' }),
+    status: z.string().optional(),
+    address: z.string({ required_error: 'address is required' }),
+    visiting_date: z.string({ required_error: 'visiting data is required' }),
+    visiting_hour: z.string({ required_error: 'visiting hour is required' }),
   }),
 });
 

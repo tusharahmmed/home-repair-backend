@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Book } from '@prisma/client';
+import { Service } from '@prisma/client';
 import { paginationHelpers } from '../../../helpers/paginationHelper';
 import { IGenericResponse } from '../../../interfaces/common';
 import { IPaginationOptions } from '../../../interfaces/pagination';
 import prisma from '../../../shared/prisma';
-import { BOOK_SEARCH_FIELDS } from './book.constant';
-import { IBookFilters } from './book.interface';
+import { BOOK_SEARCH_FIELDS } from './service.constant';
+import { IBookFilters } from './service.interface';
 
-const insertIntoDb = async (payload: Book) => {
-  const result = await prisma.book.create({
+const insertIntoDb = async (payload: Service) => {
+  const result = await prisma.service.create({
     data: payload,
     include: {
       category: true,
@@ -21,7 +21,7 @@ const insertIntoDb = async (payload: Book) => {
 const getAllDocument = async (
   options: IPaginationOptions,
   filters: IBookFilters
-): Promise<IGenericResponse<Book[]>> => {
+): Promise<IGenericResponse<Service[]>> => {
   // pagination
   const { page, skip, size, sortBy, sortOrder } =
     paginationHelpers.calculatePagination(options);
@@ -55,21 +55,6 @@ const getAllDocument = async (
             },
           };
         }
-
-        if (key === 'minPrice') {
-          return {
-            price: {
-              gte: Number(filterData['minPrice']),
-            },
-          };
-        }
-        if (key === 'maxPrice') {
-          return {
-            price: {
-              lte: Number(filterData['maxPrice']),
-            },
-          };
-        }
       }),
     });
   }
@@ -77,7 +62,7 @@ const getAllDocument = async (
   const whereConditions: any =
     andConditions.length > 0 ? { AND: andConditions } : {};
 
-  const result = await prisma.book.findMany({
+  const result = await prisma.service.findMany({
     // filters
     where: whereConditions,
 
@@ -93,7 +78,7 @@ const getAllDocument = async (
     },
   });
 
-  const total = await prisma.book.count({ where: whereConditions });
+  const total = await prisma.service.count({ where: whereConditions });
   const totalPage = Math.ceil(total / size);
 
   return {
@@ -108,7 +93,7 @@ const getAllDocument = async (
 };
 
 const getDocumentById = async (id: string) => {
-  const result = await prisma.book.findUnique({
+  const result = await prisma.service.findUnique({
     where: {
       id,
     },
@@ -123,12 +108,12 @@ const getDocumentById = async (id: string) => {
 const getDocumentByCategory = async (
   categoryId: string,
   options: IPaginationOptions
-): Promise<IGenericResponse<Book[]>> => {
+): Promise<IGenericResponse<Service[]>> => {
   // pagination
   const { page, skip, size, sortBy, sortOrder } =
     paginationHelpers.calculatePagination(options);
 
-  const result = await prisma.book.findMany({
+  const result = await prisma.service.findMany({
     where: {
       categoryId,
     },
@@ -144,7 +129,7 @@ const getDocumentByCategory = async (
     },
   });
 
-  const total = await prisma.book.count({
+  const total = await prisma.service.count({
     where: {
       categoryId,
     },
@@ -162,8 +147,8 @@ const getDocumentByCategory = async (
   };
 };
 
-const updateDocumentById = async (id: string, payload: Book) => {
-  const result = await prisma.book.update({
+const updateDocumentById = async (id: string, payload: Service) => {
+  const result = await prisma.service.update({
     where: {
       id,
     },
@@ -174,7 +159,7 @@ const updateDocumentById = async (id: string, payload: Book) => {
 };
 
 const deleteDocumentById = async (id: string) => {
-  const result = await prisma.book.delete({
+  const result = await prisma.service.delete({
     where: {
       id,
     },

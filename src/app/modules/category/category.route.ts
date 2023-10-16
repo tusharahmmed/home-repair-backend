@@ -8,22 +8,22 @@ import { CategoryValidation } from './category.validation';
 const router = Router();
 
 router.post(
-  '/create-category',
+  '/create',
   validateRequest(CategoryValidation.category),
-  auth(USER_ROLE.admin),
+  auth(USER_ROLE.super_admin, USER_ROLE.admin),
   CategoryController.insertIntoDb
 );
 
 router.patch(
   '/:id',
   validateRequest(CategoryValidation.category),
-  auth(USER_ROLE.admin),
+  auth(USER_ROLE.super_admin, USER_ROLE.admin),
   CategoryController.updateDocumentById
 );
 
 router.delete(
   '/:id',
-  auth(USER_ROLE.admin),
+  auth(USER_ROLE.super_admin, USER_ROLE.admin),
   CategoryController.deleteDocumentById
 );
 

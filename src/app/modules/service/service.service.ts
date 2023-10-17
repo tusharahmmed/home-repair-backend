@@ -1,15 +1,27 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Service } from '@prisma/client';
+import httpStatus from 'http-status';
+import ApiError from '../../../errors/ApiError';
+import { FileUploadHelper } from '../../../helpers/FileUploadHelper';
 import { paginationHelpers } from '../../../helpers/paginationHelper';
 import { IGenericResponse } from '../../../interfaces/common';
+import { IUploadFile } from '../../../interfaces/file';
 import { IPaginationOptions } from '../../../interfaces/pagination';
 import prisma from '../../../shared/prisma';
 import { BOOK_SEARCH_FIELDS } from './service.constant';
 import { IBookFilters } from './service.interface';
 
-const insertIntoDb = async (payload: Service) => {
+const insertIntoDb = async (payload: Service, file: IUploadFile) => {
+  const uploadedImage = await FileUploadHelper.uploadToCloudinary(file);
+  if (!uploadedImage) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Image upload failed');
+  }
+
   const result = await prisma.service.create({
-    data: payload,
+    data: {
+      ...payload,
+      image: uploadedImage.secure_url as string,
+    },
     include: {
       category: true,
     },
@@ -156,22 +168,58 @@ const getDocumentByCategory = async (
   };
 };
 
-const updateDocumentById = async (id: string, payload: Service) => {
+const updateDocumentById = async (
+  id: string,
+  payload: Service,
+  file: IUploadFile
+) => {
+  const serviceDetails = await prisma.service.findUnique({
+    where: { id },
+  });
+
+  if (file && serviceDetails?.image) {
+    const response = await FileUploadHelper.replaceImage(
+      serviceDetails.image,
+      file
+    );
+    if (!response) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'Image upload failed');
+    }
+    payload.image = response.secure_url as string;
+  }
+
+  if (file && !serviceDetails?.image) {
+    const uploadedImage = await FileUploadHelper.uploadToCloudinary(file);
+    if (!uploadedImage) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'Image upload failed');
+    } else {
+      payload.image = uploadedImage.secure_url;
+    }
+  }
+
   const result = await prisma.service.update({
-    where: {
-      id,
+    where: { id },
+    data: {
+      ...payload,
     },
-    data: payload,
   });
 
   return result;
 };
 
 const deleteDocumentById = async (id: string) => {
-  const result = await prisma.service.delete({
-    where: {
-      id,
-    },
+  const result = await prisma.$transaction(async tx => {
+    const isExistHomeBanner = await tx.service.findUnique({
+      where: { id },
+      select: { image: true },
+    });
+
+    if (isExistHomeBanner?.image) {
+      await FileUploadHelper.destroyToCloudinary(isExistHomeBanner.image);
+    }
+    return tx.service.delete({
+      where: { id },
+    });
   });
 
   return result;

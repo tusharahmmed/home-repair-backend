@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import httpStatus from 'http-status';
 import { PAGINATION_FIELDS } from '../../../constants/pagination';
+import { IUploadFile } from '../../../interfaces/file';
 import catchAsync from '../../../shared/catchAsync';
 import pick from '../../../shared/pick';
 import sendResponse from '../../../shared/sendResponse';
@@ -7,7 +9,14 @@ import { BOOK_FILTERS_FIELDS } from './service.constant';
 import { BookService } from './service.service';
 
 const insertIntoDb = catchAsync(async (req, res) => {
-  const result = await BookService.insertIntoDb(req.body);
+  const { data } = req.body;
+
+  const file = req?.file as any;
+
+  const result = await BookService.insertIntoDb(
+    JSON.parse(data),
+    file as IUploadFile
+  );
 
   sendResponse(res, {
     success: true,
@@ -62,8 +71,15 @@ const getDocumentByCategory = catchAsync(async (req, res) => {
 
 const updateDocumentById = catchAsync(async (req, res) => {
   const { id } = req.params;
-  const payload = req.body;
-  const result = await BookService.updateDocumentById(id, payload);
+  const { data } = req.body;
+
+  const file = req?.file as any;
+
+  const result = await BookService.updateDocumentById(
+    id,
+    JSON.parse(data),
+    file
+  );
 
   sendResponse(res, {
     success: true,

@@ -1,5 +1,6 @@
 import { USER_ROLE } from '@prisma/client';
 import { Router } from 'express';
+import { FileUploadHelper } from '../../../helpers/FileUploadHelper';
 import auth from '../../middlewares/auth';
 import validateRequest from '../../middlewares/validateRequest';
 import { BookController } from './service.controller';
@@ -9,8 +10,9 @@ const router = Router();
 
 router.post(
   '/create',
-  validateRequest(ServiceValidation.createService),
+  // validateRequest(ServiceValidation.createService),
   auth(USER_ROLE.super_admin, USER_ROLE.admin),
+  FileUploadHelper.upload.single('file'),
   BookController.insertIntoDb
 );
 
@@ -20,6 +22,7 @@ router.patch(
   '/:id',
   validateRequest(ServiceValidation.updateServie),
   auth(USER_ROLE.super_admin, USER_ROLE.admin),
+  FileUploadHelper.upload.single('file'),
   BookController.updateDocumentById
 );
 

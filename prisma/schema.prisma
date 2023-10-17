@@ -16,8 +16,8 @@ model User {
   email            String            @unique
   password         String
   role             USER_ROLE         @default(user)
-  contactNo        String?
-  address          String?
+  contactNo        String?           @default("")
+  address          String?           @default("")
   profileImg       String?           @default("")
   reviewAndRatings ReviewAndRating[]
 
@@ -73,6 +73,8 @@ model ReviewAndRating {
 
   service   Service @relation(fields: [serviceId], references: [id])
   serviceId String
+
+  createdAt DateTime @default(now())
 
   @@map("review_ratings")
 }

@@ -1,10 +1,12 @@
 import httpStatus from 'http-status';
+import { JwtPayload } from 'jsonwebtoken';
 import catchAsync from '../../../shared/catchAsync';
 import sendResponse from '../../../shared/sendResponse';
 import { UserService } from './user.service';
 
 const getAllFromDb = catchAsync(async (req, res) => {
-  const result = await UserService.getAllFromDb();
+  const user = req.user;
+  const result = await UserService.getAllFromDb(user as JwtPayload);
 
   sendResponse(res, {
     success: true,

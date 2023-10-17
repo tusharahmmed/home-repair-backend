@@ -1,13 +1,31 @@
-import { User } from '@prisma/client';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { USER_ROLE, User } from '@prisma/client';
 import bcrypt from 'bcrypt';
+import { JwtPayload } from 'jsonwebtoken';
 import config from '../../../config';
 import prisma from '../../../shared/prisma';
 import { excludeFields } from '../../../shared/utils';
 
-const getAllFromDb = async () => {
-  const result = await prisma.user.findMany();
+const getAllFromDb = async (user: JwtPayload) => {
+  let result: any = [];
 
-  const passwordRemoved = await result.map(user => {
+  if (user.role === USER_ROLE.admin) {
+    result = await prisma.user.findMany({
+      where: {
+        role: 'user',
+      },
+    });
+  }
+
+  if (user.role === USER_ROLE.super_admin) {
+    result = await prisma.user.findMany({
+      where: {
+        role: 'admin',
+      },
+    });
+  }
+
+  const passwordRemoved = await result.map((user: any) => {
     return excludeFields(user, ['password']);
   });
 

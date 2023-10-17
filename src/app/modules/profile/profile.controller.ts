@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { User } from '@prisma/client';
 import httpStatus from 'http-status';
 import { JwtPayload } from 'jsonwebtoken';
 import catchAsync from '../../../shared/catchAsync';
@@ -15,11 +17,14 @@ const getProfile = catchAsync(async (req, res) => {
   });
 });
 const updateProfile = catchAsync(async (req, res) => {
-  const payload = req.body;
+  const { data } = req.body;
+
+  const file = req?.file as any;
 
   const result = await ProfileService.updateProfile(
-    payload,
-    req.user as JwtPayload
+    req.user as JwtPayload,
+    JSON.parse(data) as User,
+    file
   );
 
   sendResponse(res, {

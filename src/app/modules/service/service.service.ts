@@ -99,6 +99,15 @@ const getDocumentById = async (id: string) => {
     },
     include: {
       category: true,
+      reviewAndRatings: {
+        include: {
+          user: {
+            select: {
+              name: true,
+            },
+          },
+        },
+      },
     },
   });
 

@@ -13,7 +13,9 @@ app.use(cookieParser());
 
 //parser
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(
+  express.urlencoded({ parameterLimit: 100000, limit: '50mb', extended: true })
+);
 
 // root route
 app.get('/', (req: Request, res: Response) => {

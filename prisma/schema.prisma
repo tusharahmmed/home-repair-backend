@@ -52,7 +52,7 @@ model Service {
   description String
 
   categoryId       String
-  category         Category          @relation(fields: [categoryId], references: [id])
+  category         Category          @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   reviewAndRatings ReviewAndRating[]
 
   createdAt DateTime @default(now())
@@ -68,10 +68,10 @@ model ReviewAndRating {
   review String
   rating Int
 
-  user   User   @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 
-  service   Service @relation(fields: [serviceId], references: [id])
+  service   Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
   serviceId String
 
   createdAt DateTime @default(now())
@@ -82,10 +82,10 @@ model ReviewAndRating {
 model Order {
   id String @id @default(uuid())
 
-  user   User   @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 
-  service   Service @relation(fields: [serviceId], references: [id])
+  service   Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
   serviceId String
 
   status        ORDER_STATUS @default(pending)

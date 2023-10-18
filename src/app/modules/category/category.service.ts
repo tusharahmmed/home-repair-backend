@@ -13,6 +13,7 @@ const getAllDocument = async () => {
   const result = await prisma.category.findMany({
     include: {
       services: true,
+      portfolios: true,
     },
   });
 

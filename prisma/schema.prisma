@@ -39,8 +39,9 @@ model Category {
   title    String
   services Service[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt()
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt()
+  portfolios Portfolio[]
 
   @@map("categories")
 }
@@ -61,6 +62,23 @@ model Service {
   orders Order[]
 
   @@map("services")
+}
+
+model Portfolio {
+  id          String  @id @default(uuid())
+  image       String? @default("")
+  description String
+  client      String
+  location    String
+  year        String
+
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  categoryId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+
+  @@map("portfolios")
 }
 
 model ReviewAndRating {

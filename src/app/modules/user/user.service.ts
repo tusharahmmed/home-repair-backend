@@ -79,6 +79,14 @@ const deleteDocumentById = async (id: string) => {
 };
 
 const createDocument = async (payload: User) => {
+  // update password
+  if (payload.password) {
+    payload.password = await bcrypt.hash(
+      payload.password,
+      Number(config.bcrypt_salt_round)
+    );
+  }
+
   const result = await prisma.user.create({
     data: payload,
   });

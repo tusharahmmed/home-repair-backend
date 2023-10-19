@@ -19,6 +19,7 @@ model User {
   contactNo        String?           @default("")
   address          String?           @default("")
   profileImg       String?           @default("")
+  permissions      USER_PERMISSION[] @default([])
   reviewAndRatings ReviewAndRating[]
 
   createdAt DateTime @default(now())
@@ -32,6 +33,13 @@ enum USER_ROLE {
   user
   admin
   super_admin
+}
+
+enum USER_PERMISSION {
+  category
+  service
+  portfolio
+  order
 }
 
 model Category {

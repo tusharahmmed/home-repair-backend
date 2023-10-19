@@ -46,9 +46,6 @@ const getAllOrders = async (user: JwtPayload) => {
 
   // if admin
   const result = await prisma.order.findMany({
-    where: {
-      userId: user?.id,
-    },
     include: {
       service: {
         include: {

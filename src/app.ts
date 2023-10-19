@@ -19,7 +19,7 @@ app.use(
 
 // root route
 app.get('/', (req: Request, res: Response) => {
-  res.send('Book Catallog app...');
+  res.send('Home Repair app...');
 });
 
 // application routes
